@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title><%= title + ' ' + config.title %></title>
+    <meta name="description" content="<%= config.description %>" />
+    <meta name="keywords" content="<%= config.keywords %>" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no,width=device-width">
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="shortcut icon" href="/public/favicon.ico" type="image/x-icon" />
+
+    <%-
+        Loader('/public/css/upload_index.css')
+        .css('/public/css/default.css')
+        .css('/public/css/header.css')
+        .css('/public/css/upload.css')
+        .css('/public/css/head_phone.css')
+        .css('/public/css/footer.css')
+        .done(assets, config.static_host, config.mini_assets)
+    %>
+
+    <script src="http://apps.bdimg.com/libs/jquery/1.8.3/jquery.min.js"></script>
+    <%-
+        Loader('/public/js/upload_index.js')
+        .js('/public/js/hint.js')
+        .js('/public/js/api.js')
+        .js('/public/js/head_phone.js')
+        .done(assets, config.static_host, config.mini_assets)
+    %>
+</head>
+<body>
+<%- include('../header.html', {user: user}) %>
+
+<div class="upload">
+    <div class="content">
+        <div class="up-head">
+            <i class="iconfont">&#xe616;</i>发布新贴
+        </div>
+        <div class="up-form">
+            <div class="group clearfix">
+                <p>形式</p>
+                <form class="type_form" id="type">
+                    <label><input name="content-type" type="radio" value="pleaseBook" checked="checked" />求书</label>
+                    <label><input name="content-type" type="radio" value="donatedBook" />赠书</label>
+                    <label><input name="content-type" type="radio" value="topic" />发帖</label>
+                </form>
+            </div>
+            <div class="group clearfix">
+                <p>内容</p>
+                <textarea id="title" placeholder="有必要的话，留下自己的联系方式哈~"></textarea>
+                <p class="hint">如果是求书或者赠书的话，最好将联系方式附上。还剩100字</p>
+            </div>
+            <div class="group clearfix">
+                <p>上传图片</p>
+                <form  id="form-img" action="/api/post/upload" method="post" target="iframe-img" enctype="multipart/form-data">
+                    <input id="action" name="avatar" type="file">
+                    <iframe style="display: none;" id="iframe-img" name="iframe-img" ></iframe>
+                    <i class="bn">+</i>
+                    <span class="hint">支持的格式为: JPEG, PNG，GIF 大小限制: 3MB内。</span>
+                </form>
+                <img src="" alt="" class="show-img" onclick="inputFile()">
+            </div>
+            <div class="upload-bnt">上传</div>
+        </div>
+
+    </div>
+    <div class="side">
+        <h2>帖子投稿</h2>
+        <h3>不能涉及政治敏感话题</h3>
+        <h3>这是一个二手书互赠平台</h3>
+        <h3>这还是一个求学问答的论坛</h3>
+    </div>
+</div>
+
+<%- include('../footer.html') %>
+<script type="text/javascript">
+
+	// 上传帖子图片
+    uploadPostImg($('#action'),$('.show-img'));
+
+    // 上传帖子
+    $('.upload-bnt').on('click', function(){
+        console.log($("input[name='content-type']:checked").val());
+        uploadPost($('#title').val(), $('.show-img').attr('src'), $("input[name='content-type']:checked").val());
+    });
+
+    // 点击已经上传了的图片时候弹出图片选择框
+	function inputFile() {
+		return $('#action').click();
+    }
+
+</script>
+</body>
+</html>
