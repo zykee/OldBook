@@ -1,7 +1,7 @@
 var config = {
 	domain: '',
 
-	title: '逗你的 (正经网站)',
+	title: '陈书集 共享学习论坛',
 
 	description: '网站描述',
 
